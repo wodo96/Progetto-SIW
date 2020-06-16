@@ -7,7 +7,17 @@
     <title>Taskmanager project</title>
 </head>
 <body>
-<h1 th:text="${project.name}"></h1>
+<table>
+    <td><h1 th:text="${project.name}"></h1></td>
+    <td>
+        <form id="modifyProjectForm" th:action="@{/projects/{projectId}/modifyProject(projectId=${project.id})}"
+              method="get">
+            <button type="submit" name="submit" value="value">MODIFY</button>
+        </form>
+    </td>
+</table>
+
+
 <h4 th:text="${project.description}"></h4>
 <div th:if="${members.size() > 0}">
     <h3>Shared with</h3>
@@ -17,12 +27,57 @@
         </li>
     </ul>
 </div>
-<h3>Tasks:</h3>
+<!--<h3>Owner:</h3> TODO
 <ul>
-    <li th:each="task : ${project.tasks}">
-        <div th:text="${task.name}"></div>
-        <div th:text="${task.description}" style="..."></div>
+    <li>
+        <div  th:text="${project.owner}"></div>
     </li>
-</ul>
+</ul>-->
+<table>
+    <td><h2>Tasks:</h2></td>
+    <td>
+        <form th:action="@{/projects/{projectId}/addTask(projectId=${project.id})}"
+              method="get">
+            <button type="submit" name="submit" value="value">Add Task</button>
+        </form>
+    </td>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Assigned</th>
+        <th>Completed</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="task : ${project.tasks}">
+        <td><a th:href="'/projects/' + ${project.id} + '/task/' + ${task.id}"
+               th:text="${task.name}"></a></td>
+        <td>
+            <div th:if="${task.user!=null}" th:text="${task.user.firstName} +' '+ ${task.user.lastName}" style="color:lime"></div>
+            <div th:if="${task.user==null}" style="color:red">Not assigned</div>
+        </td>
+        <td>
+            <div th:if="${task.completed==true}" style="color: lime">Completed</div>
+            <div th:if="${task.completed!=true}" style="color: red">Not Completed</div>
+        </td>
+        <td>
+            <form th:action="@{/task/{taskId}/assignTask(taskId=${task.id})}" method="get" id="assignTask">
+                <button th:if="${task.user==null}" type="submit" name="submit" value="value">ASSIGN</button>
+            </form>
+        </td>
+        <td>
+            <form method="post" th:action="@{/task/{taskId}/delete(taskId=${task.id})}">
+                <button type="submit" name="submit" value="value">DELETE</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
+<footer><a href="/home">Home</a></footer>
 </html>

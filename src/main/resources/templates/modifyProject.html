@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Taskmanager modify project</title>
+</head>
+<body>
+<form id="modifyProjectForm" th:action="@{/projects/{projectId}/modifyProject(projectId=${projectForm.id})}"
+      method="POST">
+
+    <table>
+        <tr>
+            <td><label for="projectNameInput">Project Name</label></td>
+            <td><input id="projectNameInput" type="text" placeholder="NAME" th:field="${projectForm.name}"
+                       value="${project.name}"/></td>
+            <td th:if="${#fields.hasErrors('projectForm.name')}" th:errors="${projectForm.name}"
+                th:style="'color:red'"></td>
+        </tr>
+        <tr>
+            <td><label for="descriptionInput"></label>Description</td>
+            <td><input id="descriptionInput" type="text" placeholder="DESCRIPTION"
+                       th:field="${projectForm.description}" value="${project.description}"/>
+            </td>
+            <td th:if="${#fields.hasErrors('projectForm.description')}" th:errors="${projectForm.description}"
+                th:style="'color:red'"></td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Modify</button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+</body>
+</html>

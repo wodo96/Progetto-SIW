@@ -7,7 +7,7 @@
     <title>Taskmanager add Project</title>
 </head>
 <body>
-<h1>Register new User</h1>
+<h1>Register new Project</h1>
 <form id="registerUserForm"
       th:action="@{/projects/add}"
       th:object="${projectForm}"
@@ -15,17 +15,19 @@
     <table>
         <tr>
             <td><label for="projectNameInput">Project Name</label></td>
-            <td><input id="projectNameInput" type="text" placeholder="NAME" required th:field="*{name}"/></td>
+            <td><input id="projectNameInput" type="text" placeholder="NAME" th:field="*{name}"/></td>
             <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:style="'color:red'"></td>
         </tr>
         <tr>
             <td><label for="descriptionInput"></label>Description</td>
-            <td><input id="descriptionInput" type="text" placeholder="DESCRIPTION" required th:field="*{description}">
+            <td><input id="descriptionInput" type="text" placeholder="DESCRIPTION" th:field="*{description}">
             </td>
-            <td th:if="${#fields.hasErrors('description')}" th:errors="*{name}" th:style="'color:red'"></td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:style="'color:red'"></td>
         </tr>
         <tr>
-            <td><button type="submit">Register</button></td>
+            <td>
+                <button type="submit">Register</button>
+            </td>
         </tr>
     </table>
 </form>

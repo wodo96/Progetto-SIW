@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,38 +34,47 @@ public class ProjectController {
     @Autowired
     SessionData sessionData;
 
-    @RequestMapping(value = {"/projects"},method = RequestMethod.GET)
-    public String myOwnedProjects(Model model){
+    @RequestMapping(value = {"/projects"}, method = RequestMethod.GET)
+    public String myOwnedProjects(Model model) {
         User loggedUser = sessionData.getLoggedUser();
         List<Project> projectList = projectService.retrieveProjectsOwnedBy(loggedUser);
-        model.addAttribute("loggedUser",loggedUser);
-        model.addAttribute("projectsList",projectList);
+        model.addAttribute("loggedUser", loggedUser);
+        model.addAttribute("projectsList", projectList);
         return "projects";
     }
 
-    @RequestMapping(value = {"projects/{projectId}"},method = RequestMethod.GET)
-    public String project(Model model, @PathVariable Long projectId){
+    @RequestMapping(value = {"/sharedProjects"}, method = RequestMethod.GET)
+    public String sharedProjects(Model model) {
+        User loggedUser = sessionData.getLoggedUser();
+        List<Project> sharedProjectList = projectService.retrieveProjectsSharedBy(loggedUser);
+        model.addAttribute("loggedUser", loggedUser);
+        model.addAttribute("projectsShared", sharedProjectList);
+        return "sharedProjects";
+    }
+
+    @RequestMapping(value = {"projects/{projectId}"}, method = RequestMethod.GET)
+    public String project(Model model, @PathVariable Long projectId) {
         //if no project with passed ID exists,
         //redirect to the view with the list of my projects
         Project project = projectService.getProject(projectId);
-        if(project==null){
+        if (project == null) {
             return "redirect:/projects";
         }
         User loggedUser = sessionData.getLoggedUser();
         //if i don't have access to any projects with the passed ID,
         // redirect to the view with the list of my project
         List<User> members = userService.getMembers(project);
-        if(!project.getOwner().equals(loggedUser) && !members.contains(loggedUser)) {
+        if (!project.getOwner().equals(loggedUser) && !members.contains(loggedUser)) {
             return "redirect:/projects";
         }
         model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("project", project);
-        model.addAttribute("members",members);
+        model.addAttribute("members", members);
         return "project";
     }
 
-    @RequestMapping(value = {"/projects/add"},method = RequestMethod.GET)
-    public String createProjectForm(Model model){
+    @RequestMapping(value = {"/projects/add"}, method = RequestMethod.GET)
+    public String createProjectForm(Model model) {
         User loggedUser = sessionData.getLoggedUser();
         model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("projectForm", new Project());
@@ -72,16 +82,72 @@ public class ProjectController {
     }
 
     @RequestMapping(value = {"/projects/add"}, method = RequestMethod.POST)
-    public String createProject(@Valid @ModelAttribute("projectForm") Project project, BindingResult projectBindingResult, Model model){
+    public String createProject(@Valid @ModelAttribute("projectForm") Project project, BindingResult projectBindingResult, Model model) {
         User loggedUser = sessionData.getLoggedUser();
-        projectValidator.validate(project,projectBindingResult);
-        if(!projectBindingResult.hasErrors()){
+        projectValidator.validate(project, projectBindingResult);
+        if (!projectBindingResult.hasErrors()) {
             project.setOwner(loggedUser);
             this.projectService.saveProject(project);
             return ("redirect:/projects/" + project.getId());
         }
-        model.addAttribute("loggedUser",loggedUser);
+        model.addAttribute("loggedUser", loggedUser);
         return "addProject";
+    }
+
+    @RequestMapping(value = {"/projects/{projectId}/delete"}, method = RequestMethod.POST)
+    public String removeProject(Model model, @PathVariable Long projectId) {
+        this.projectService.deleteById(projectId);
+        return "redirect:/projects";
+    }
+
+    @RequestMapping(value = {"/projects/{projectId}/shareProject"}, method = RequestMethod.GET)
+    public String goShareProject(Model model, @PathVariable Long projectId) {
+        Project project = projectService.getProject(projectId);
+        List<User> userAlreadyMember = project.getMembers();
+        User loggedUser = sessionData.getLoggedUser();
+        this.sessionData.setTemp_id(projectId);
+        model.addAttribute("project", project);
+        model.addAttribute("usersList", this.userService.removeMembersFromAllUsers(userAlreadyMember, loggedUser));
+        return "shareProject";
+    }
+
+    @RequestMapping(value = {"/shareProject/{userId}"}, method = RequestMethod.POST)
+    public String shareProject(Model model, @PathVariable("userId") Long userId) {
+        Long id =sessionData.getTemp_id();
+        Project currentProject = projectService.getProject(id);
+        User user = userService.getUser(userId);
+       /* if (user.getVisibleProjects() == null || user.getVisibleProjects().isEmpty()) {
+            List<Project> vp = new ArrayList<Project>();
+            vp.add(currentProject);
+            user.setVisibleProjects(vp);
+        } else {
+            user.getVisibleProjects().add(currentProject);
+        }*/
+        currentProject.addMember(user);
+        projectService.saveProject(currentProject);
+        return "modifySuccessful";
+    }
+
+    @RequestMapping(value = {"/projects/{projectId}/modifyProject"}, method = RequestMethod.GET)
+    public String goToModifyProject(Model model, @PathVariable Long projectId) {
+        Project project = projectService.getProject(projectId);
+        model.addAttribute("projectForm", project);
+
+        return "modifyProject";
+    }
+
+    @RequestMapping(value = {"/projects/{projectId}/modifyProject"}, method = RequestMethod.POST)
+    public String modifyProject(Model model, @Valid @ModelAttribute("projectForm") Project project, BindingResult projectBindingResult,
+                                @PathVariable Long projectId) {
+        Project currentProject = projectService.getProject(projectId);
+        this.projectValidator.validate(project, projectBindingResult);
+        if (!projectBindingResult.hasErrors()) {
+            currentProject.setName(project.getName());
+            currentProject.setDescription(project.getDescription());
+            this.projectService.saveProject(currentProject);
+            return ("redirect:/projects/"+projectId);
+        }
+        return "modifyProject";
     }
 
 }

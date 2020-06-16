@@ -8,7 +8,7 @@ import it.uniroma3.siw.taskmanager.model.Credentials;
 public interface CredentialsRepository extends CrudRepository<Credentials, Long>{
 
 	/**
-	 * Restituisce un User tramite il suo username
+	 * Restituisce uno User tramite il suo username
 	 * @param username
 	 * @return an Optional for the User with the passed userName
 	 */
@@ -19,5 +19,5 @@ public interface CredentialsRepository extends CrudRepository<Credentials, Long>
 	 * @param username
 	 */
 	public void deleteByUsername(String username);
-	
+
 }

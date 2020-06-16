@@ -54,7 +54,5 @@ public class CredentialsService {
 	@Transactional
 	public void deleteCredentials(String username) {
 		credentialsRepository.deleteByUsername(username);
-
-
 	}
 }

@@ -1,6 +1,10 @@
 package it.uniroma3.siw.taskmanager.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -11,6 +15,7 @@ import javax.persistence.*;
 public class User {
 
     public User() {
+        this.tasks = new ArrayList<Task>();
     }
 
     public User(String firstName, String lastName) {
@@ -44,8 +49,12 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)//fechtype lazy di default
     private List<Project> ownerProjects;
 
-    @ManyToMany(mappedBy = "members")//fechtype lazy di default
+    @ManyToMany(mappedBy = "members", cascade = CascadeType.REMOVE)//fechtype lazy di default
     private List<Project> visibleProjects;
+
+    @OneToMany(mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Task> tasks;
 
     @PrePersist
     protected void onPersist() {
@@ -121,6 +130,18 @@ public class User {
 
     public void addVisibleProject(Project visibleProject) {
         this.visibleProjects.add(visibleProject);
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Boolean addTask(Task task){
+        return this.tasks.add(task);
     }
 
     @Override

@@ -7,7 +7,16 @@
     <title>Taskmanager UserProfile</title>
 </head>
 <body>
-<h1>Your Profile</h1>
+<table>
+    <td><h1>Your Profile</h1></td>
+    <td>
+        <form th:action="@{/users/modifyUser}"
+        th:object="${credentials}"
+        method="get">
+        <button type="submit" name="submit" value="value">MODIFY</button>
+        </form>
+    </td>
+</table>
 <table>
     <tr>
         <td>Username:</td>
@@ -35,4 +44,5 @@
     </tr>
 </table>
 </body>
+<footer><a href="/home">Home</a></footer>
 </html>

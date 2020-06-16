@@ -43,11 +43,19 @@ public class ProjectService {
 
 
 	public List<Project> retrieveProjectsOwnedBy(User loggedUser) {
-		Iterable<Project> projectsIterable = this.projectRepository.findAll();
-		List<Project> projectList = new ArrayList<Project>();
-		for (Project p : projectsIterable){
-			projectList.add(p);
-		}
-		return projectList;
+		return this.projectRepository.findByOwner(loggedUser);
+	}
+
+	public List<Project> retrieveProjectsSharedBy(User loggedUser){
+		return  this.projectRepository.findByMembers(loggedUser);
+	}
+
+
+	public void deleteById(Long id){
+		this.projectRepository.deleteById(id);
+	}
+
+	public Long projectFromTask(Long id){
+		return this.projectRepository.findproject_idFromId(id);
 	}
 }

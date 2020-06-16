@@ -47,4 +47,21 @@ import it.uniroma3.siw.taskmanager.repository.UserRepository;
 	public List<User> getMembers(Project project) {
 		return project.getMembers();
 	}
+
+
+	public List<User> removeMembersFromAllUsers(List<User> members, User loggedUser) {
+		List<User> allUsers = this.getAllUsers();
+		allUsers.remove(loggedUser);
+		if (members == null || members.isEmpty()) {
+			return allUsers;
+		} else {
+			for (User u :
+					members) {
+				allUsers.remove(u);
+			}
+			return allUsers;
+		}
+	}
+
+
 }

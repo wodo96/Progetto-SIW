@@ -10,6 +10,7 @@ public class Project {
 
 	public Project() {
 		this.members = new ArrayList<>();
+		this.tasks = new ArrayList<>();
 	}
 
 	public Project(String name, String description) {
@@ -46,6 +47,9 @@ public class Project {
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id")
 	private List<Task> tasks;
+
+	@OneToMany (mappedBy = "project")
+	private List<Tag> tags;
 
 	public Long getId() {
 		return id;

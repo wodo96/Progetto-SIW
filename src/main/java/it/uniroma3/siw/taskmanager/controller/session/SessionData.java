@@ -16,6 +16,17 @@ import org.springframework.stereotype.Component;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SessionData {
 
+    private Long temp_id;
+
+    public void setTemp_id(Long temp_id){
+        this.temp_id=temp_id;
+    }
+
+    public Long getTemp_id(){
+        return this.temp_id;
+    }
+
+
     /**
      * Currently logged User
      */
@@ -40,6 +51,11 @@ public class SessionData {
         }
         return this.credentials;
     }
+
+    public void setLoggedCredentials(Credentials credentials){
+        this.credentials=credentials;
+    }
+
     /**
      * Retrieve from Session the currently logged User.
      * If it is not stored in Session already, retrieve it from the DB and store it in session.
@@ -49,6 +65,10 @@ public class SessionData {
             this.update();
         }
         return this.user;
+    }
+
+    public void setLoggedUser(User user){
+        this.user=user;
     }
 
     /**
