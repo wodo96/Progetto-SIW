@@ -15,8 +15,10 @@ xmlns:th="https://www.thymeleaf.org">
             <td><label for="usernameInput">Username</label>
             <td>
                 <input
-                        id="usernameInput" type="text" placeholder="USERNAME" value="${credentials.username}"
+                        id="usernameInput" type="text" placeholder="USERNAME" value="${credentialsForm.username}"
                         th:field="${credentialsForm.username}"/></td>
+            <td th:if="${#fields.hasErrors('credentialsForm.username')}"
+                th:errors="${credentialsForm.username}" th:style="'color:red'"></td>
         </tr>
 
         <tr>

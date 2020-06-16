@@ -18,7 +18,7 @@
         </tr>
         <tbody>
         <tr th:each="task : ${tasksAssigned}">
-            <td th:text="${task.name}"><!--<a th:href="'/projects/{}/tasks/' + ${task.id}" >...</a>--></td>
+            <td><a th:href="'/tasks/' + ${task.id}" th:text="${task.name}">...</a></td>
             <td th:text="${task.description}">...</td>
             <td>
                 <div th:if="${task.completed == false}">Not Completed</div>

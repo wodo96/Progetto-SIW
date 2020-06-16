@@ -23,7 +23,7 @@
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
         <td>
-            <form method="post" th:action="@{/shareProject/{userId}(userId=${user.id})}">
+            <form method="post" th:action="@{'/projects/' + ${project.id} + '/shareProject/' + ${user.id}}">
                 <button type="submit">Share</button>
             </form>
         </td>

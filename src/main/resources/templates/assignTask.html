@@ -23,7 +23,7 @@
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
         <td>
-            <form method="post" th:action="@{/assignTask/{userId}(userId=${user.id})}">
+            <form method="post" th:action="@{'/task/' + ${task.id} + '/assignTask/' + ${user.id}}">
                 <button type="submit">Assign</button>
             </form>
         </td>

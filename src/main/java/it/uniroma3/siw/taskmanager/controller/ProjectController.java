@@ -111,18 +111,10 @@ public class ProjectController {
         return "shareProject";
     }
 
-    @RequestMapping(value = {"/shareProject/{userId}"}, method = RequestMethod.POST)
-    public String shareProject(Model model, @PathVariable("userId") Long userId) {
-        Long id =sessionData.getTemp_id();
-        Project currentProject = projectService.getProject(id);
+    @RequestMapping(value = {"/projects/{projectId}/shareProject/{userId}"}, method = RequestMethod.POST)
+    public String shareProject(Model model, @PathVariable("userId") Long userId, @PathVariable("projectId") Long projectId) {
+        Project currentProject = projectService.getProject(projectId);
         User user = userService.getUser(userId);
-       /* if (user.getVisibleProjects() == null || user.getVisibleProjects().isEmpty()) {
-            List<Project> vp = new ArrayList<Project>();
-            vp.add(currentProject);
-            user.setVisibleProjects(vp);
-        } else {
-            user.getVisibleProjects().add(currentProject);
-        }*/
         currentProject.addMember(user);
         projectService.saveProject(currentProject);
         return "modifySuccessful";

@@ -91,19 +91,18 @@ public class TaskController {
         return ("redirect:/projects/"+projectId);
     }
 
-    @RequestMapping(value = {"task/{taskId}/assignTask"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/task/{taskId}/assignTask"}, method = RequestMethod.GET)
     public String goToAssignTask(Model model, @PathVariable Long taskId){
         Task task = taskService.getTask(taskId);
-        sessionData.setTemp_id(taskId);
         Project project = projectService.getProject(projectService.projectFromTask(taskId));
         model.addAttribute("task",task);
         model.addAttribute("usersList",project.getMembers());
         return "assignTask";
     }
 
-    @RequestMapping(value = {"/assignTask/{userId}"}, method = RequestMethod.POST)
-    public String assignTask(Model model, @PathVariable Long userId){
-        Task task = taskService.getTask(sessionData.getTemp_id());
+    @RequestMapping(value = {"/task/{taskId}/assignTask/{userId}"}, method = RequestMethod.POST)
+    public String assignTask(Model model, @PathVariable Long userId, @PathVariable Long taskId){
+        Task task = taskService.getTask(taskId);
         User user = userService.getUser(userId);
         user.addTask(task);
         task.setUser(user);
@@ -120,6 +119,11 @@ public class TaskController {
         return "tasksAssigned";
     }
 
+    @RequestMapping(value = {"/tasks/{taskId}"}, method = RequestMethod.GET)
+    public String task (Model model, @PathVariable Long taskId){
+        Project project = this.projectService.getProject(this.projectService.projectFromTask(taskId));
+        return ("redirect:/projects/" + project.getId() + "/task/" + taskId);
+    }
 
 
 

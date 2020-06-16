@@ -1,5 +1,7 @@
 package it.uniroma3.siw.taskmanager.controller.validation;
 
+import it.uniroma3.siw.taskmanager.controller.session.SessionData;
+import it.uniroma3.siw.taskmanager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -13,6 +15,9 @@ public class CredentialsValidator  implements Validator{
 
 	@Autowired
 	CredentialsService credentialsService;
+
+	@Autowired
+	SessionData sessionData;
 
 	final Integer MAX_USERNAME_LENGTH =20;
 	final Integer MIN_USERNAME_LENGTH =4;
@@ -43,6 +48,26 @@ public class CredentialsValidator  implements Validator{
 			errors.rejectValue("password", "size");
 		}
 
+	}
+
+	public void validateOnUpdate(Object o, Errors errors){
+		Credentials credentials = (Credentials) o;
+		Credentials loggedCredentials = sessionData.getLoggedCredentials();
+		String username = credentials.getUsername().trim();
+		String password = credentials.getPassword().trim();
+
+		if(username.isEmpty()) {
+			errors.rejectValue("username", "required");
+		}else if(username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
+			errors.rejectValue("username", "size");
+		}else if(this.credentialsService.getCredentials(username)!=null && !username.equals(loggedCredentials.getUsername())) {
+			errors.rejectValue("username", "duplicate");
+		}
+		if(password.isEmpty()) {
+			errors.rejectValue("password", "required");
+		}else if(password.length() < MIN_PASSWORD_LENGTH || password.length() > MAX_PASSWORD_LENGTH) {
+			errors.rejectValue("password", "size");
+		}
 	}
 
 }
