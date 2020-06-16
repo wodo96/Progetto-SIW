@@ -16,16 +16,66 @@
         <td>
             <form id="modifyTaskForm" th:action="@{/task/{taskId}/modifyTask(taskId=${task.id})}"
                   method="get">
-                <button type="submit" name="submit" value="value">MODIFY</button>
+                <button th:if="${(project.owner.equals(loggedUser)) && (task.completed==false)}" type="submit"
+                        name="submit" value="value">MODIFY
+                </button>
             </form>
         </td>
     </tr>
 
     </thead>
 </table>
-
 <div>With Description:</div>
-<div th:text="${task.description}"></div>
+<table>
+    <tr>
+        <td th:text="${task.description}"></td>
+    </tr>
+    <tr>
+        <td>State</td>
+        <td th:if="${task.completed==true}" style="color: lime">Completed</td>
+        <td th:if="${task.completed==false}" style="color: red">Not Completed</td>
+        <td>
+            <form th:action="@{/task/{taskId}/completeTask(taskId=${task.id})}" method="post" id="completeTask">
+                <button th:if="${task.completed==false && (task.user != null && task.user.equals(loggedUser))}"
+                        type="submit" name="submit" value="value">COMPLETE
+                </button>
+            </form>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td><h2>Comments of this task:</h2></td>
+        <!-- <td>
+             <form method="get" th:action="@{/task/{taskId}/addComment(taskId=${task.id})}">
+                 <button type="submit">Add Comment</button>
+             </form>
+         </td>-->
+    </tr>
+</table>
+<table>
+    <tr th:each="comment : ${task.comments}">
+        <td th:text="${comment.creationTimeStamp}"></td>
+        <td th:text="${comment.text}"></td>
+        <td>
+            <form th:action="@{'/task/' + ${task.id} + '/deleteComment/' + ${comment.id}}" method="post">
+                <button type="submit">DELETE</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<table>
+    <form th:action="@{/task/{taskId}/addComment(taskId=${task.id})}"
+          method="post">
+        <tr>
+
+            <td><label for="newComment">New Comment:</label></td>
+            <td><input id="newComment" type="text" placeholder="Write here your comment" th:field="${commentForm.text}"
+                       required/></td>
+            <td><button type="submit">ADD COMMENT</button></td>
+        </tr>
+    </form>
+</table>
 
 
 </body>

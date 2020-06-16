@@ -97,7 +97,7 @@ public class UserController {
         User oldUser = userService.getUser(sessionData.getLoggedUser().getId());
 
         this.userValidator.validate(user, userBindingResult);
-        this.credentialsValidator.validateOnUpdate(credentials, credentialsBindingResult);//TODO
+        this.credentialsValidator.validateOnUpdate(credentials, credentialsBindingResult);
 
         if (!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()) {
 

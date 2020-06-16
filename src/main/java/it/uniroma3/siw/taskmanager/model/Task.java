@@ -12,7 +12,7 @@ public class Task {
     public Task() {
         super();
         this.tags = new ArrayList<Tag>();
-        //this.comments = new ArrayList<String>();
+        this.comments = new ArrayList<Comment>();
     }
 
     public Task(String name, String description, Boolean completed) {
@@ -48,9 +48,8 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //@Column(nullable = true)
-    //private List<String> comments;
-
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "task")
+    private List<Comment> comments;
 
     @PrePersist
     protected void onPersist() {
@@ -127,17 +126,17 @@ public class Task {
         this.user = userAssigned;
     }
 
-    /* public List<String> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<String> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
-    public Boolean addComment(String comment) {
+    public Boolean addComment(Comment comment) {
         return this.comments.add(comment);
-    }*/
+    }
 
     @Override
     public String toString() {

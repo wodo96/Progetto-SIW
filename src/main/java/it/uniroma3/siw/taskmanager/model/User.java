@@ -49,7 +49,7 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)//fechtype lazy di default
     private List<Project> ownerProjects;
 
-    @ManyToMany(mappedBy = "members", cascade = CascadeType.REMOVE)//fechtype lazy di default
+    @ManyToMany(mappedBy = "members", cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})//fechtype lazy di default
     private List<Project> visibleProjects;
 
     @OneToMany(mappedBy = "user")

@@ -8,8 +8,4 @@ import it.uniroma3.siw.taskmanager.model.Task;
 
 public interface TaskRepository extends CrudRepository<Task, Long>{
 
-    public void deleteById(Long taskId);
-
-
-
 }
