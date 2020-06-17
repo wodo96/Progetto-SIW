@@ -43,14 +43,27 @@
         </td>
     </tr>
 </table>
+<table th:if="${task.tags.size() > 0}">
+    <tr>
+        <td>
+            <h3>Tags:</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <ul>
+                <li th:each="tag : ${task.tags}">
+                    <div th:text="${tag.name}" th:style="'color:' + ${tag.color}"></div>
+                    <div th:text="${tag.description}"></div>
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
 <table>
     <tr>
         <td><h2>Comments of this task:</h2></td>
-        <!-- <td>
-             <form method="get" th:action="@{/task/{taskId}/addComment(taskId=${task.id})}">
-                 <button type="submit">Add Comment</button>
-             </form>
-         </td>-->
     </tr>
 </table>
 <table>
@@ -64,19 +77,22 @@
         </td>
     </tr>
 </table>
-<table>
-    <form th:action="@{/task/{taskId}/addComment(taskId=${task.id})}"
-          method="post">
+<form th:action="@{/task/{taskId}/addComment(taskId=${task.id})}"
+      method="post">
+    <table>
+
         <tr>
 
             <td><label for="newComment">New Comment:</label></td>
             <td><input id="newComment" type="text" placeholder="Write here your comment" th:field="${commentForm.text}"
                        required/></td>
-            <td><button type="submit">ADD COMMENT</button></td>
+            <td>
+                <button type="submit">ADD COMMENT</button>
+            </td>
         </tr>
-    </form>
-</table>
 
+    </table>
+</form>
 
 </body>
 <footer><a href="/home">Home</a></footer>

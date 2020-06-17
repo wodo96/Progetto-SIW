@@ -83,10 +83,6 @@ public class TaskController {
         Task task = taskService.getTask(taskId);
         Long projectId = projectService.projectFromTask(taskId);
         this.taskService.deleteTask(task);
-        //model.addAttribute("projectId",projectId);
-        //model.addAttribute("loggedUser",sessionData.getLoggedUser());
-        // model.addAttribute("members",project.getMembers());
-
         return ("redirect:/projects/" + projectId);
     }
 

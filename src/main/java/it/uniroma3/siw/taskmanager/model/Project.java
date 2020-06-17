@@ -11,6 +11,7 @@ public class Project {
 	public Project() {
 		this.members = new ArrayList<>();
 		this.tasks = new ArrayList<>();
+		this.tags = new ArrayList<>();
 	}
 
 	public Project(String name, String description) {
@@ -18,14 +19,6 @@ public class Project {
 		this.members = new ArrayList<>();
 		this.name = name;
 		this.description = description;
-	}
-
-	public Project(User owner, List<User> members, List<Task> tasks) {
-		super();
-		this.members = new ArrayList<>();
-		this.owner = owner;
-		this.members = members;
-		this.tasks = tasks;
 	}
 
 	@Id
@@ -48,7 +41,7 @@ public class Project {
 	@JoinColumn(name = "project_id")
 	private List<Task> tasks;
 
-	@OneToMany (mappedBy = "project")
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Tag> tags;
 
 	public Long getId() {
@@ -107,6 +100,29 @@ public class Project {
 		this.tasks.add(task);
 	}
 
+	public List<Tag> getTags() {
+		return this.tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public Boolean addTag(Tag tag){
+		return this.tags.add(tag);
+	}
+
+
+	public List<Task> tasksWithoutTag(Tag tag) {
+		List<Task> taskList = new ArrayList<>();
+		for (Task t :
+				this.getTasks()) {
+			if (!t.getTags().contains(tag)) {
+				taskList.add(t);
+			}
+		}
+		return taskList;
+	}
 
 	@Override
 	public String toString() {

@@ -1,8 +1,11 @@
 package it.uniroma3.siw.taskmanager.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import it.uniroma3.siw.taskmanager.model.Project;
+import it.uniroma3.siw.taskmanager.model.Tag;
 import it.uniroma3.siw.taskmanager.model.User;
 import it.uniroma3.siw.taskmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

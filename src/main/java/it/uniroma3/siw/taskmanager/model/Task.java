@@ -118,6 +118,10 @@ public class Task {
         this.tags = tags;
     }
 
+    public Boolean addTag(Tag tag){
+        return this.tags.add(tag);
+    }
+
     public User getUser() {
         return user;
     }
@@ -137,6 +141,8 @@ public class Task {
     public Boolean addComment(Comment comment) {
         return this.comments.add(comment);
     }
+
+
 
     @Override
     public String toString() {

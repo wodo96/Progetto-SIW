@@ -1,6 +1,7 @@
 package it.uniroma3.siw.taskmanager.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,6 +10,7 @@ public class Tag {
 
     public Tag() {
         super();
+        this.tasks= new ArrayList<>();
     }
 
     public Tag(String name, String color, String description) {
@@ -19,7 +21,7 @@ public class Tag {
     }
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -33,9 +35,6 @@ public class Tag {
 
     @ManyToMany
     private List<Task> tasks;
-
-    @ManyToOne
-    private Project project;
 
     public Long getId() {
         return id;
@@ -67,6 +66,18 @@ public class Tag {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Boolean addTask(Task task){
+        return this.tasks.add(task);
     }
 
     @Override

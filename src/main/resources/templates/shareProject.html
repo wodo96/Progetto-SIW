@@ -19,6 +19,7 @@
     </thead>
     <tbody>
     <tr th:each="user : ${usersList}">
+<!--TODO add username-->
 
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
@@ -31,4 +32,5 @@
     </tbody>
 </table>
 </body>
+<footer><a href="/home">Home</a></footer>
 </html>
