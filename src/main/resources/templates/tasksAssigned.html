@@ -21,8 +21,8 @@
             <td><a th:href="'/tasks/' + ${task.id}" th:text="${task.name}">...</a></td>
             <td th:text="${task.description}">...</td>
             <td>
-                <div th:if="${task.completed == false}">Not Completed</div>
-                <div th:if="${task.completed == true}">Completed</div>
+                <div style="color: red" th:if="${task.completed == false}">Not Completed</div>
+                <div style="color: lime" th:if="${task.completed == true}">Completed</div>
             </td>
         </tr>
         </tbody>

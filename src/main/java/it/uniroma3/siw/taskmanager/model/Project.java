@@ -112,6 +112,10 @@ public class Project {
 		return this.tags.add(tag);
 	}
 
+	public Boolean deleteMemeber(User user){
+		return this.members.remove(user);
+	}
+
 
 	public List<Task> tasksWithoutTag(Tag tag) {
 		List<Task> taskList = new ArrayList<>();

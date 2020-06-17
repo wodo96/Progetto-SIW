@@ -4,6 +4,7 @@ import it.uniroma3.siw.taskmanager.controller.session.SessionData;
 import it.uniroma3.siw.taskmanager.controller.validation.CredentialsValidator;
 import it.uniroma3.siw.taskmanager.controller.validation.UserValidator;
 import it.uniroma3.siw.taskmanager.model.Credentials;
+import it.uniroma3.siw.taskmanager.model.Project;
 import it.uniroma3.siw.taskmanager.model.User;
 import it.uniroma3.siw.taskmanager.service.CredentialsService;
 import it.uniroma3.siw.taskmanager.service.UserService;
@@ -76,7 +77,11 @@ public class UserController {
 
     @RequestMapping(value = {"/admin/users/{username}/delete"}, method = RequestMethod.POST)
     public String removeUser(Model model, @PathVariable String username) {
+        for (Project p : credentialsService.getCredentials(username).getUser().getVisibleProjects()) {
+            p.deleteMemeber(credentialsService.getCredentials(username).getUser());
+        }
         this.credentialsService.deleteCredentials(username);
+
         return "redirect:/admin/users";
     }
 
@@ -100,18 +105,17 @@ public class UserController {
         this.credentialsValidator.validateOnUpdate(credentials, credentialsBindingResult);
 
         if (!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()) {
-
             oldUser.setFirstName(user.getFirstName());
             oldUser.setLastName(user.getLastName());
             oldUser.setLastUpdateTimeStamp(LocalDateTime.now());
             oldUser.setCreationTimeStamp(sessionData.getLoggedUser().getCreationTimeStamp());
             oldCredentials.setUsername(credentials.getUsername());
             oldCredentials.setPassword(credentials.getPassword());
-           // oldCredentials.setRole(sessionData.getLoggedCredentials().getRole());
             oldCredentials.setUser(oldUser);
             sessionData.setLoggedUser(oldUser);
             sessionData.setLoggedCredentials(oldCredentials);
-            credentialsService.saveCredentials(oldCredentials);
+            //credentialsService.saveCredentials(oldCredentials);
+            this.credentialsService.updateCredentials(oldCredentials, oldCredentials.getRole());
             return "modifySuccessful";
         }
         return "modifyUser";

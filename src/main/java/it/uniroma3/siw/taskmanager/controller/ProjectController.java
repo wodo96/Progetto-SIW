@@ -2,8 +2,10 @@ package it.uniroma3.siw.taskmanager.controller;
 
 import it.uniroma3.siw.taskmanager.controller.session.SessionData;
 import it.uniroma3.siw.taskmanager.controller.validation.ProjectValidator;
+import it.uniroma3.siw.taskmanager.model.Credentials;
 import it.uniroma3.siw.taskmanager.model.Project;
 import it.uniroma3.siw.taskmanager.model.User;
+import it.uniroma3.siw.taskmanager.service.CredentialsService;
 import it.uniroma3.siw.taskmanager.service.ProjectService;
 import it.uniroma3.siw.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class ProjectController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CredentialsService credentialsService;
 
     @Autowired
     ProjectValidator projectValidator;
@@ -61,15 +66,18 @@ public class ProjectController {
             return "redirect:/projects";
         }
         User loggedUser = sessionData.getLoggedUser();
+
         //if i don't have access to any projects with the passed ID,
         // redirect to the view with the list of my project
         List<User> members = userService.getMembers(project);
         if (!project.getOwner().equals(loggedUser) && !members.contains(loggedUser)) {
             return "redirect:/projects";
         }
+        List<Credentials> credentialsMembers = this.credentialsService.getCredentialsByUsers(members);
+        model.addAttribute("credentialsService",this.credentialsService);
         model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("project", project);
-        model.addAttribute("members", members);
+        model.addAttribute("credentialsMembers", credentialsMembers);
         return "project";
     }
 
@@ -105,9 +113,10 @@ public class ProjectController {
         Project project = projectService.getProject(projectId);
         List<User> userAlreadyMember = project.getMembers();
         User loggedUser = sessionData.getLoggedUser();
+        List<Credentials> credentials = this.credentialsService.getCredentialsByUsers(this.userService.removeMembersFromAllUsers(userAlreadyMember, loggedUser));
         this.sessionData.setTemp_id(projectId);
         model.addAttribute("project", project);
-        model.addAttribute("usersList", this.userService.removeMembersFromAllUsers(userAlreadyMember, loggedUser));
+        model.addAttribute("credentials", credentials);
         return "shareProject";
     }
 
@@ -137,7 +146,7 @@ public class ProjectController {
             currentProject.setName(project.getName());
             currentProject.setDescription(project.getDescription());
             this.projectService.saveProject(currentProject);
-            return ("redirect:/projects/"+projectId);
+            return ("redirect:/projects/" + projectId);
         }
         return "modifyProject";
     }

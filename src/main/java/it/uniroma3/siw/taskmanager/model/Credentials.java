@@ -14,6 +14,7 @@ public class Credentials {
 
 	public Credentials() {
 		super();
+		this.user = new User();
 	}
 
 	public static final String DEFAULT_ROLE = "DEFAULT";

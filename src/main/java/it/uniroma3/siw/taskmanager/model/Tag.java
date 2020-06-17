@@ -80,6 +80,10 @@ public class Tag {
         return this.tasks.add(task);
     }
 
+    public Boolean deleteTask(Task task){
+        return this.tasks.remove(task);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

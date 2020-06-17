@@ -2,6 +2,7 @@ package it.uniroma3.siw.taskmanager.repository;
 
 import java.util.Optional;
 
+import it.uniroma3.siw.taskmanager.model.Project;
 import org.springframework.data.repository.CrudRepository;
 import it.uniroma3.siw.taskmanager.model.Credentials;
 
@@ -19,5 +20,7 @@ public interface CredentialsRepository extends CrudRepository<Credentials, Long>
 	 * @param username
 	 */
 	public void deleteByUsername(String username);
+
+	public Credentials findCredentialsByUserId(Long user_id);
 
 }

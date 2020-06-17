@@ -2,9 +2,7 @@ package it.uniroma3.siw.taskmanager.controller;
 
 import it.uniroma3.siw.taskmanager.controller.session.SessionData;
 import it.uniroma3.siw.taskmanager.model.*;
-import it.uniroma3.siw.taskmanager.service.ProjectService;
-import it.uniroma3.siw.taskmanager.service.TaskService;
-import it.uniroma3.siw.taskmanager.service.UserService;
+import it.uniroma3.siw.taskmanager.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +25,12 @@ public class TaskController {
 
     @Autowired
     SessionData sessionData;
+
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    CredentialsService credentialsService;
 
     @Autowired
     ProjectService projectService;
@@ -54,9 +58,14 @@ public class TaskController {
         Project project = projectService.getProject(projectId);
         Task task = taskService.getTask(taskId);
         List<Tag> tags = task.getTags();
+        Credentials credential = new Credentials();
+        if (task.getUser() != null) {
+            credential = this.credentialsService.getCredentialByUserId(task.getUser().getId());
+        }
+        model.addAttribute("credential", credential);
         model.addAttribute("project", project);
         model.addAttribute("task", task);
-        model.addAttribute("tags", tags);//TODO
+        model.addAttribute("tags", tags);
         model.addAttribute("loggedUser", sessionData.getLoggedUser());
         model.addAttribute("commentForm", new Comment());
         return "task";
@@ -82,6 +91,10 @@ public class TaskController {
     public String removeTask(Model model, @PathVariable Long taskId) {
         Task task = taskService.getTask(taskId);
         Long projectId = projectService.projectFromTask(taskId);
+        for (Tag t :
+                task.getTags()) {
+            t.deleteTask(task);
+        }
         this.taskService.deleteTask(task);
         return ("redirect:/projects/" + projectId);
     }
@@ -90,8 +103,9 @@ public class TaskController {
     public String goToAssignTask(Model model, @PathVariable Long taskId) {
         Task task = taskService.getTask(taskId);
         Project project = projectService.getProject(projectService.projectFromTask(taskId));
+        List<Credentials> credentials = this.credentialsService.getCredentialsByUsers(project.getMembers());
         model.addAttribute("task", task);
-        model.addAttribute("usersList", project.getMembers());
+        model.addAttribute("credentials", credentials);
         return "assignTask";
     }
 
@@ -122,7 +136,14 @@ public class TaskController {
 
     @RequestMapping(value = {"/task/{taskId}/completeTask"}, method = RequestMethod.POST)
     public String completeTask(Model model, @PathVariable("taskId") Long taskId) {
+        User user = sessionData.getLoggedUser();
         Task task = taskService.getTask(taskId);
+        for (Task t :
+                user.getTasks()) {
+            if (t.equals(task)) {
+                t.setCompleted(true);
+            }
+        }
         task.setCompleted(true);
         taskService.saveTask(task);
         return ("redirect:/tasks/" + taskId);

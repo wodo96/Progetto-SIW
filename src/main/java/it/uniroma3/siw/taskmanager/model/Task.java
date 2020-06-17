@@ -44,7 +44,7 @@ public class Task {
     @ManyToMany(mappedBy = "tasks")
     private List<Tag> tags;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
 

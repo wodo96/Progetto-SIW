@@ -39,7 +39,8 @@
                 <td th:text="${tag.name}" th:style="'color:' + ${tag.color}"></td>
                 <td>
 
-                    <form th:action="@{'/projects/' + ${project.id} + '/tag/' + ${tag.id} + '/assignTag'}" method="GET" id="assignTag">
+                    <form th:action="@{'/projects/' + ${project.id} + '/tag/' + ${tag.id} + '/assignTag'}" method="GET"
+                          id="assignTag">
                         <button type="submit">Assign this tag to</button>
                     </form>
             </label>
@@ -50,7 +51,7 @@
         <br>
     </li>
 </ul>
-<table th:if="${members.size() >= 0}">
+<table>
     <tr>
         <td><h3>Shared with:</h3></td>
         <td>
@@ -60,11 +61,13 @@
             </form>
         </td>
     </tr>
+</table>
+<table>
     <tr>
         <td>
             <ul>
-                <li th:each="member : ${members}">
-                    <div th:text="${member.firstName} + ' ' + ${member.lastName}"></div>
+                <li th:each="credential : ${credentialsMembers}">
+                    <div th:text="${credential.username} + '=>' + ${credential.user.firstName} + ' ' + ${credential.user.lastName}"></div>
                 </li>
             </ul>
         </td>
@@ -86,7 +89,7 @@
         </form>
     </td>
 </table>
-<table>
+<table th:if="${project.tasks.size()>0}">
     <thead>
     <tr>
         <th>Name</th>
@@ -102,7 +105,7 @@
         <td><a th:href="'/projects/' + ${project.id} + '/task/' + ${task.id}"
                th:text="${task.name}"></a></td>
         <td>
-            <div th:if="${task.user!=null}" th:text="${task.user.firstName} +' '+ ${task.user.lastName}"
+            <div th:if="${task.user!=null}" th:text=" ${credentialsService.getCredentialByUserId(task.user.id).username} + '=>' + ${task.user.firstName} +' '+ ${task.user.lastName}"
                  style="color:lime"></div>
             <div th:if="${task.user==null}" style="color:red">Not assigned</div>
         </td>
@@ -134,5 +137,6 @@
     </tbody>
 </table>
 </body>
-<footer><a href="/home">Home</a></footer>
+<br>
+<footer style="border-top-style: outset"><a href="/home">Home</a></footer>
 </html>

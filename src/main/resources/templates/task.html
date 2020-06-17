@@ -30,6 +30,8 @@
     <tr>
         <td th:text="${task.description}"></td>
     </tr>
+</table>
+<table>
     <tr>
         <td>State</td>
         <td th:if="${task.completed==true}" style="color: lime">Completed</td>
@@ -43,7 +45,22 @@
         </td>
     </tr>
 </table>
-<table th:if="${task.tags.size() > 0}">
+<table>
+    <tr>
+        <td>Creation Time:</td>
+        <td th:text="${task.creationTimeStamp}"></td>
+        <td>Last modify:</td>
+        <td th:text="${task.lastUpdateTimeStamp}"></td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td>Associed To:</td>
+        <td style="color: lime" th:if="${credential.username!=null}" th:text="${credential.username} + '=>' + ${credential.user.firstName} + ' ' + ${credential.user.lastName}"></td>
+        <td th:if="${credential.username==null}" style="color: red">No one</td>
+    </tr>
+</table>
+<table th:if="${task.tags.size() >= 0}">
     <tr>
         <td>
             <h3>Tags:</h3>
