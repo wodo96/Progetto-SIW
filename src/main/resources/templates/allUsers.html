@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="credentials : ${credentialsList}">
+        <tr th:each="credentials : ${credentialsList}" th:if="${!loggedUser.equals(credentials.user)}">
             <td th:text="${credentials.username}"></td>
             <td th:text="${credentials.user.firstName}"></td>
             <td th:text="${credentials.user.lastName}"></td>
@@ -33,5 +33,5 @@
     </table>
 </div>
 </body>
-<footer><a href="/home">Home</a></footer>
+<footer style="border-top-style: outset"><a href="/home">Home</a></footer>
 </html>

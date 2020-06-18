@@ -5,8 +5,10 @@ import it.uniroma3.siw.taskmanager.controller.validation.CredentialsValidator;
 import it.uniroma3.siw.taskmanager.controller.validation.UserValidator;
 import it.uniroma3.siw.taskmanager.model.Credentials;
 import it.uniroma3.siw.taskmanager.model.Project;
+import it.uniroma3.siw.taskmanager.model.Task;
 import it.uniroma3.siw.taskmanager.model.User;
 import it.uniroma3.siw.taskmanager.service.CredentialsService;
+import it.uniroma3.siw.taskmanager.service.TaskService;
 import it.uniroma3.siw.taskmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,10 +41,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TaskService taskService;
+
     @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String home(Model model) {
         User loggedUser = sessionData.getLoggedUser();
         model.addAttribute("user", loggedUser);
+        model.addAttribute("credential", sessionData.getLoggedCredentials());
         return "home";
     }
 
@@ -79,6 +85,10 @@ public class UserController {
     public String removeUser(Model model, @PathVariable String username) {
         for (Project p : credentialsService.getCredentials(username).getUser().getVisibleProjects()) {
             p.deleteMemeber(credentialsService.getCredentials(username).getUser());
+        }
+        for (Task t :
+                credentialsService.getCredentials(username).getUser().getTasks()) {
+            t.setUser(null);
         }
         this.credentialsService.deleteCredentials(username);
 

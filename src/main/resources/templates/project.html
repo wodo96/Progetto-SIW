@@ -20,6 +20,14 @@
 
 <h4 th:text="${project.description}"></h4>
 
+<h3>Owner:</h3>
+<ul>
+    <li>
+        <div  th:text="${credentialsOwner.username} + '=>' + ${credentialsOwner.user.firstName}
+                + ' ' + ${credentialsOwner.user.lastName}"></div>
+    </li>
+</ul>
+
 <table th:if="${project.tags.size() >= 0}">
     <tr>
         <td><h3>Associated Tags:</h3></td>
@@ -73,12 +81,6 @@
         </td>
     </tr>
 </table>
-<!--<h3>Owner:</h3> TODO
-<ul>
-    <li>
-        <div  th:text="${project.owner}"></div>
-    </li>
-</ul>-->
 <table>
     <td><h2>Tasks:</h2></td>
     <td>

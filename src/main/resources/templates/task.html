@@ -49,6 +49,8 @@
     <tr>
         <td>Creation Time:</td>
         <td th:text="${task.creationTimeStamp}"></td>
+    </tr>
+    <tr>
         <td>Last modify:</td>
         <td th:text="${task.lastUpdateTimeStamp}"></td>
     </tr>
@@ -56,7 +58,8 @@
 <table>
     <tr>
         <td>Associed To:</td>
-        <td style="color: lime" th:if="${credential.username!=null}" th:text="${credential.username} + '=>' + ${credential.user.firstName} + ' ' + ${credential.user.lastName}"></td>
+        <td style="color: lime" th:if="${credential.username!=null}"
+            th:text="${credential.username} + '=>' + ${credential.user.firstName} + ' ' + ${credential.user.lastName}"></td>
         <td th:if="${credential.username==null}" style="color: red">No one</td>
     </tr>
 </table>
@@ -83,6 +86,19 @@
         <td><h2>Comments of this task:</h2></td>
     </tr>
 </table>
+<form th:action="@{/task/{taskId}/addComment(taskId=${task.id})}"
+      method="post">
+    <table>
+
+        <tr>
+            <td><textarea placeholder="Write here your comment" th:field="${commentForm.text}"
+                          required cols="30" rows="5"></textarea></td>
+            <td>
+                <button type="submit">ADD COMMENT</button>
+            </td>
+        </tr>
+    </table>
+</form>
 <table>
     <tr th:each="comment : ${task.comments}">
         <td th:text="${comment.creationTimeStamp}"></td>
@@ -94,23 +110,8 @@
         </td>
     </tr>
 </table>
-<form th:action="@{/task/{taskId}/addComment(taskId=${task.id})}"
-      method="post">
-    <table>
 
-        <tr>
-
-            <td><label for="newComment">New Comment:</label></td>
-            <td><input id="newComment" type="text" placeholder="Write here your comment" th:field="${commentForm.text}"
-                       required/></td>
-            <td>
-                <button type="submit">ADD COMMENT</button>
-            </td>
-        </tr>
-
-    </table>
-</form>
 
 </body>
-<footer><a href="/home">Home</a></footer>
+<footer style="border-top-style: outset"><a href="/home">Home</a></footer>
 </html>

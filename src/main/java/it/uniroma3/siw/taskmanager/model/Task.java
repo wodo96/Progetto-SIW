@@ -48,7 +48,7 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "task")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
     private List<Comment> comments;
 
     @PrePersist
@@ -141,7 +141,6 @@ public class Task {
     public Boolean addComment(Comment comment) {
         return this.comments.add(comment);
     }
-
 
 
     @Override

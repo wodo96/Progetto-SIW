@@ -75,6 +75,7 @@ public class ProjectController {
         }
         List<Credentials> credentialsMembers = this.credentialsService.getCredentialsByUsers(members);
         model.addAttribute("credentialsService",this.credentialsService);
+        model.addAttribute("credentialsOwner", this.credentialsService.getCredentialByUserId(project.getOwner().getId()));
         model.addAttribute("loggedUser", loggedUser);
         model.addAttribute("project", project);
         model.addAttribute("credentialsMembers", credentialsMembers);
@@ -114,7 +115,6 @@ public class ProjectController {
         List<User> userAlreadyMember = project.getMembers();
         User loggedUser = sessionData.getLoggedUser();
         List<Credentials> credentials = this.credentialsService.getCredentialsByUsers(this.userService.removeMembersFromAllUsers(userAlreadyMember, loggedUser));
-        this.sessionData.setTemp_id(projectId);
         model.addAttribute("project", project);
         model.addAttribute("credentials", credentials);
         return "shareProject";
