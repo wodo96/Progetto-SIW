@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Renzo Cuomo -524782-
+ */
 @SpringBootApplication
 public class TaskmanagerApplication {
 

@@ -30,7 +30,7 @@ public class Tag {
     @Column(nullable = true)
     private String color;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @ManyToMany

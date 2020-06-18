@@ -77,6 +77,7 @@
                         <table>
                             <tr>
                                 <td th:text="${tag.name}" th:style="'color:' + ${tag.color}"></td>
+                                <td class="color-box" th:style="'background-color:' + ${tag.color}" th:width="20" th:height="20"></td>
                                 <td>
                                     <form th:if="${project.owner.equals(loggedUser)}"
                                           method="post" for="deleteTagFromTask"
