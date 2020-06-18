@@ -9,7 +9,8 @@
 <body>
 <h1>Projects share with me</h1>
 <div>
-    <table>
+    <div th:if="${projectsShared.size()==0}"><h3>No projects already shared to you</h3></div>
+    <table th:if="${projectsShared.size()>0}">
         <thead>
         <tr>
             <th>Name</th>

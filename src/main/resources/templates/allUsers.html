@@ -9,7 +9,8 @@
 <body>
 <h1>All Users</h1>
 <div>
-    <table class="table table-hover">
+    <div th:if="${credentialsList.size()==1}">No other Users here!</div>
+    <table class="table table-hover" th:if="${credentialsList.size()>1}">
         <thead>
         <tr>
             <th>Username</th>

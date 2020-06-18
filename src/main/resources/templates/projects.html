@@ -9,7 +9,8 @@
 <body>
 <h1>My Projects</h1>
 <div>
-    <table>
+    <div th:if="${projectsList.size()==0}"><h3>No projects already created</h3></div>
+    <table th:if="${projectsList.size()>0}">
         <thead>
         <tr>
             <th>Name</th>
