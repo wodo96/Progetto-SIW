@@ -44,19 +44,20 @@
     <li th:each="tag : ${project.tags}">
         <table>
             <tr>
-                <td><label th:text="${tag.name}" th:style="'color:' + ${tag.color}"></label></td>
-                <td class="color-box" th:style="'background-color:' + ${tag.color}" th:width="20" th:height="20"></td>
+                <td><label th:text="${tag.name}"></label></td>
+                <td class="color-box" th:style="'background-color:' + ${tag.color} + ';border-style: solid'"
+                    th:width="20" th:height="20"></td>
                 <td>
 
                     <form th:action="@{'/projects/' + ${project.id} + '/tag/' + ${tag.id} + '/assignTag'}" method="GET"
                           for="assignTag">
-                        <button id="assignTag" type="submit">Assign this tag to</button>
+                        <button th:if="${project.owner.equals(loggedUser)}" id="assignTag" type="submit">Assign this tag to</button>
                     </form>
                 </td>
                 <td>
                     <form th:action="@{'/projects/' + ${project.id} + '/tag/' + ${tag.id} + '/deleteTag'}" method="post"
                           for="deleteTag">
-                        <button id="deleteTag" type="submit">DELETE</button>
+                        <button th:if="${project.owner.equals(loggedUser)}" id="deleteTag" type="submit">DELETE</button>
                     </form>
                 </td>
 

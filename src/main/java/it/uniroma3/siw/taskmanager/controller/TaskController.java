@@ -62,6 +62,7 @@ public class TaskController {
         if (task.getUser() != null) {
             credential = this.credentialsService.getCredentialByUserId(task.getUser().getId());
         }
+        model.addAttribute("loggedCredentials", sessionData.getLoggedCredentials());
         model.addAttribute("credential", credential);
         model.addAttribute("project", project);
         model.addAttribute("task", task);
