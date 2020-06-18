@@ -12,15 +12,15 @@
       th:object="${tag}" method="post">
     <table>
         <tr>
-            <td><label for="tagNameInput">Tag Name:</label></td>
+            <td><label for="tagNameInput" style="font-weight: bold">Tag Name:</label></td>
             <td><input id="tagNameInput" type="text" placeholder="NAME" th:field="*{name}" required></td>
         </tr>
         <tr>
-            <td><label for="tagColorInput">Pick a color:</label></td>
+            <td><label for="tagColorInput" style="font-weight: bold">Pick a color:</label></td>
             <td><input id="tagColorInput" type="color" th:field="*{color}"></td>
         </tr>
         <tr>
-            <td><label for="tagDescriptionInput">Description</label></td>
+            <td><label for="tagDescriptionInput" style="font-weight: bold">Description</label></td>
             <td><textarea id="tagDescriptionInput" placeholder="Insert tag's description" required
                           th:field="*{description}"
                           cols="20" rows="7"></textarea></td>

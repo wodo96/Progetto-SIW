@@ -9,7 +9,8 @@
 <body>
 <h1>Share project with an user!</h1>
 <h3>Select one user from the list!</h3>
-<table>
+<h4 style="color: red" th:if="${credentials.size()==0}">No Users available to share this project</h4>
+<table th:if="${credentials.size()>0}">
     <thead>
     <tr>
         <th>Username</th>

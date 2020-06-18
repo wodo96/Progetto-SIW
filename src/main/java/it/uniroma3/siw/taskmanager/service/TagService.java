@@ -38,6 +38,11 @@ public class TagService {
         return tags;
     }
 
+    @Transactional
+    public void deleteTag(Tag tag){
+        this.tagRepository.delete(tag);
+    }
+
 
 
 }

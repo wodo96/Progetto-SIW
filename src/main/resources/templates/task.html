@@ -63,7 +63,7 @@
         <td th:if="${credential.username==null}" style="color: red">No one</td>
     </tr>
 </table>
-<table th:if="${task.tags.size() >= 0}">
+<table th:if="${task.tags.size() > 0}">
     <tr>
         <td>
             <h3>Tags:</h3>
@@ -73,7 +73,20 @@
         <td>
             <ul>
                 <li th:each="tag : ${task.tags}">
-                    <div th:text="${tag.name}" th:style="'color:' + ${tag.color}"></div>
+                    <div>
+                        <table>
+                            <tr>
+                                <td th:text="${tag.name}" th:style="'color:' + ${tag.color}"></td>
+                                <td>
+                                    <form th:if="${project.owner.equals(loggedUser)}"
+                                          method="post" for="deleteTagFromTask"
+                                          th:action="@{'/task/' + ${task.id} + '/tag/' + ${tag.id} + '/removeTag'}">
+                                        <button id="deleteTagFromTask" type="submit">REMOVE</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <div th:text="${tag.description}"></div>
                 </li>
             </ul>

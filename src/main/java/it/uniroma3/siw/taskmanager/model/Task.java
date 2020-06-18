@@ -142,6 +142,9 @@ public class Task {
         return this.comments.add(comment);
     }
 
+    public Boolean removeTag(Tag tag){
+        return this.tags.remove(tag);
+    }
 
     @Override
     public String toString() {

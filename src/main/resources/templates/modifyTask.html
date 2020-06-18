@@ -11,15 +11,15 @@
       method="POST">
     <table>
         <tr>
-            <td><label for="taskNameInput">Task Name</label></td>
+            <td><label for="taskNameInput" style="font-weight: bold">Task Name</label></td>
             <td><input id="taskNameInput" type="text" placeholder="NAME" th:field="${task.name}"
                        value="${task.name}" required/></td>
             <!--  <td th:if="${#fields.hasErrors('task.name')}" th:errors="${task.name}" th:style="'color:red'"></td>-->
         </tr>
         <tr>
-            <td><label for="descriptionInput"></label>Description</td>
-            <td><input id="descriptionInput" type="text" placeholder="DESCRIPTION"
-                       th:field="${task.description}" value="${task.description}" required/>
+            <td><label for="descriptionInput" style="font-weight: bold"></label>Description</td>
+            <td><textarea cols="30" rows="5" id="descriptionInput" placeholder="Write description of this task here"
+                          th:field="${task.description}" value="${task.description}" required></textarea>
             </td>
             <!--  <td th:if="${#fields.hasErrors('task.description')}" th:errors="${task.description}"
                   th:style="'color:red'"></td> TODO-->

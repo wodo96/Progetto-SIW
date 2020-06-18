@@ -12,7 +12,7 @@ xmlns:th="https://www.thymeleaf.org">
 
     <table>
         <tr>
-            <td><label for="usernameInput">Username</label>
+            <td><label for="usernameInput" style="font-weight: bold">Username</label>
             <td>
                 <input
                         id="usernameInput" type="text" placeholder="USERNAME" value="${credentialsForm.username}"
@@ -22,7 +22,7 @@ xmlns:th="https://www.thymeleaf.org">
         </tr>
 
         <tr>
-            <td><label for="passwordInput">Password</label>
+            <td><label for="passwordInput" style="font-weight: bold">Password</label>
             <td><input id="passwordInput" type="password"
                        placeholder="PASSWORD" required
                        th:field="${credentialsForm.password}"/></td>
@@ -31,7 +31,7 @@ xmlns:th="https://www.thymeleaf.org">
         </tr>
 
         <tr>
-            <td><label for="firstNameInput">First Name</label>
+            <td><label for="firstNameInput" style="font-weight: bold">First Name</label>
             <td><input id="firstNameInput" type="text" placeholder="FIRSTNAME"
                        value="${user.firstName}" th:field="${userForm.firstName}"/></td>
             <td th:if="${#fields.hasErrors('userForm.firstName')}"
@@ -39,7 +39,7 @@ xmlns:th="https://www.thymeleaf.org">
         </tr>
 
         <tr>
-            <td><label for="lastNameInput">Last Name</label>
+            <td><label for="lastNameInput" style="font-weight: bold">Last Name</label>
             <td><input id="lastNameInput" type="text" placeholder="LASTNAME"
                        value="${user.lastName}" th:field="${userForm.lastName}"/></td>
             <td th:if="${#fields.hasErrors('userForm.lastName')}"

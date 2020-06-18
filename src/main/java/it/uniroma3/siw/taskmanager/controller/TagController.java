@@ -68,4 +68,28 @@ public class TagController {
         return ("redirect:/tasks/" + taskId);
     }
 
+    @RequestMapping(value = {"/task/{taskId}/tag/{tagId}/removeTag"}, method = RequestMethod.POST)
+    public  String removeTag(Model model, @PathVariable ("taskId") Long taskId, @PathVariable("tagId") Long tagId){
+        Task task = taskService.getTask(taskId);
+        Tag tag = tagService.getTag(tagId);
+        tag.getTasks().remove(task);
+        task.removeTag(tag);
+        taskService.saveTask(task);
+        return ("redirect:/tasks/" + taskId);
+    }
+
+    @RequestMapping(value = {"/projects/{projectId}/tag/{tagId}/deleteTag"}, method = RequestMethod.POST)
+    public String deleteTag(Model model, @PathVariable("projectId")Long projectId, @PathVariable("tagId")Long tagId){
+        Project project = projectService.getProject(projectId);
+        Tag tag = tagService.getTag(tagId);
+        for (Task t :
+                project.getTasks()) {
+            t.removeTag(tag);
+        }
+        project.deleteTag(tag);
+        this.tagService.deleteTag(tag);
+        return ("redirect:/projects/" + projectId);
+    }
+
+
 }

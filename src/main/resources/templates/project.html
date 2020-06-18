@@ -23,7 +23,7 @@
 <h3>Owner:</h3>
 <ul>
     <li>
-        <div  th:text="${credentialsOwner.username} + '=>' + ${credentialsOwner.user.firstName}
+        <div th:text="${credentialsOwner.username} + '=>' + ${credentialsOwner.user.firstName}
                 + ' ' + ${credentialsOwner.user.lastName}"></div>
     </li>
 </ul>
@@ -43,16 +43,23 @@
 <ul>
     <li th:each="tag : ${project.tags}">
         <table>
-            <tr><label>
-                <td th:text="${tag.name}" th:style="'color:' + ${tag.color}"></td>
+            <tr>
+                <td><label th:text="${tag.name}" th:style="'color:' + ${tag.color}"></label></td>
                 <td>
 
                     <form th:action="@{'/projects/' + ${project.id} + '/tag/' + ${tag.id} + '/assignTag'}" method="GET"
-                          id="assignTag">
-                        <button type="submit">Assign this tag to</button>
+                          for="assignTag">
+                        <button id="assignTag" type="submit">Assign this tag to</button>
                     </form>
-            </label>
                 </td>
+                <td>
+                    <form th:action="@{'/projects/' + ${project.id} + '/tag/' + ${tag.id} + '/deleteTag'}" method="post"
+                          for="deleteTag">
+                        <button id="deleteTag" type="submit">DELETE</button>
+                    </form>
+                </td>
+
+
             </tr>
         </table>
         <div th:text="${tag.description}"></div>
@@ -107,7 +114,8 @@
         <td><a th:href="'/projects/' + ${project.id} + '/task/' + ${task.id}"
                th:text="${task.name}"></a></td>
         <td>
-            <div th:if="${task.user!=null}" th:text=" ${credentialsService.getCredentialByUserId(task.user.id).username} + '=>' + ${task.user.firstName} +' '+ ${task.user.lastName}"
+            <div th:if="${task.user!=null}"
+                 th:text=" ${credentialsService.getCredentialByUserId(task.user.id).username} + '=>' + ${task.user.firstName} +' '+ ${task.user.lastName}"
                  style="color:lime"></div>
             <div th:if="${task.user==null}" style="color:red">Not assigned</div>
         </td>
